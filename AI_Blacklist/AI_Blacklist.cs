@@ -43,7 +43,7 @@ namespace AI_Blacklist
             if (itemDef.DoesNotContainTag(ItemTag.AIBlacklist))
             {
                 System.Array.Resize(ref itemDef.tags, itemDef.tags.Length + 1);
-                itemDef.tags[itemDef.tags.Length - 1] = ItemTag.BrotherBlacklist;
+                itemDef.tags[itemDef.tags.Length - 1] = ItemTag.AIBlacklist;
             }
         }
     }
