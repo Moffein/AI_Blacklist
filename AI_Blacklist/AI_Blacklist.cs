@@ -140,8 +140,15 @@ namespace AI_Blacklist
         #region equipment
         private static EquipmentIndex GetRandomAllowedElite()
         {
-            EliteDef selectedElite = allowedEliteDefs[Random.Range(0, allowedEliteDefs.Count)];
-            return selectedElite.eliteEquipmentDef.equipmentIndex;
+            if (allowedEliteDefs.Count > 0)
+            {
+                EliteDef selectedElite = allowedEliteDefs[Random.Range(0, allowedEliteDefs.Count)];
+                return selectedElite.eliteEquipmentDef.equipmentIndex;
+            }
+            else
+            {
+                return EquipmentIndex.None;
+            }
         }
 
         private static IEnumerable<PickupIndex> EquipmentToPickupIndices(IEnumerable<EquipmentIndex> equipIndices)
