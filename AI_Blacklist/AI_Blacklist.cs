@@ -5,6 +5,7 @@ using BepInEx.Configuration;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace AI_Blacklist
 {
@@ -53,7 +54,7 @@ namespace AI_Blacklist
                     On.RoR2.CharacterBody.Start += (orig2, self) =>
                     {
                         orig2(self);
-                        if (self.inventory)
+                        if (NetworkServer.active && self.inventory)
                         {
                             if (fixVengeanceScaling)
                             {
