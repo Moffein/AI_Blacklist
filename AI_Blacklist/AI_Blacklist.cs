@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 namespace AI_Blacklist
 {
     [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.2.0")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.2.1")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     public class AI_Blacklist : BaseUnityPlugin
     {
@@ -54,7 +54,7 @@ namespace AI_Blacklist
                     On.RoR2.CharacterBody.Start += (orig2, self) =>
                     {
                         orig2(self);
-                        if (NetworkServer.active && self.inventory)
+                        if (NetworkServer.active && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0)
                         {
                             if (fixVengeanceScaling)
                             {
