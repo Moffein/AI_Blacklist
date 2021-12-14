@@ -14,6 +14,9 @@ namespace AI_Blacklist
         public ScavengerBlacklist()
         {
             if (!useScavBlacklist) return;
+
+            scavBlacklist = new HashSet<ItemDef>();
+
             On.RoR2.ItemCatalog.Init += (orig) =>
             {
                 orig();
@@ -44,6 +47,11 @@ namespace AI_Blacklist
                 {
                     inventory.GiveRandomEquipment();
                 }
+            };
+
+            On.EntityStates.ScavMonster.FindItem.PickupIsNonBlacklistedItem += (orig, self, pickupIndex) =>
+            {
+                return PickupIsNonBlacklistedItem(pickupIndex);
             };
         }
 
