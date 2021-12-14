@@ -1,81 +1,20 @@
 ﻿using RoR2;
-using BepInEx;
-using R2API.Utils;
-using BepInEx.Configuration;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace AI_Blacklist
 {
-    [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.2.1")]
-    [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
-    public class AI_Blacklist : BaseUnityPlugin
+    public class AIEquipBlacklist
     {
-        public static HashSet<ItemIndex> vengeanceItemBlacklist;
         public static HashSet<EquipmentIndex> equipBlacklist;
         public static HashSet<EliteDef> allowedEliteDefs;
+
         public static bool blacklistVengeanceEquipment = false;
-        public static bool fixVengeanceScaling = true;
+        public static string equipmentBlacklistString;
 
-        public void Awake()
+        public AIEquipBlacklist()
         {
-            string itemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Item Blacklist"), "ShockNearby, NovaOnHeal", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names Vanilla AI Blacklist is included by default.")).Value;
-            string equipmentBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Equipment Blacklist"), "", new ConfigDescription("List equipment codenames separated by commas. List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
-            string vengeanceItemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Vengeance Settings", "Vengeance Item Blacklist"), "", new ConfigDescription("Item Blacklist for Vengeance Clones. Same format as the global AI item blacklist.")).Value;
-            fixVengeanceScaling = base.Config.Bind<bool>(new ConfigDefinition("Vengeance Settings", "Fix Scaling"), true, new ConfigDescription("Fix Vengeance clones always being level 1.")).Value;
-
-            //Blacklist items
-            On.RoR2.ItemCatalog.Init += (orig) =>
-            {
-                orig();
-
-                itemBlacklistString = new string(itemBlacklistString.ToCharArray().Where(c => !System.Char.IsWhiteSpace(c)).ToArray());
-                string[] splitBlacklist = itemBlacklistString.Split(',');
-                foreach (string str in splitBlacklist)
-                {
-                    AddToBlacklist(str);
-                }
-
-                //Build vengeanceBlacklist
-                vengeanceItemBlacklist = new HashSet<ItemIndex>();
-                vengeanceItemBlacklistString = new string(vengeanceItemBlacklistString.ToCharArray().Where(c => !System.Char.IsWhiteSpace(c)).ToArray());
-                string[] vsplitBlacklist = vengeanceItemBlacklistString.Split(',');
-                foreach (string str in  vsplitBlacklist)
-                {
-                    AddToVengeanceBlacklist(str);
-                }
-
-                //Remove Blacklisted items from Vengeance Clones
-                if (fixVengeanceScaling || vengeanceItemBlacklist.Count > 0)
-                {
-                    On.RoR2.CharacterBody.Start += (orig2, self) =>
-                    {
-                        orig2(self);
-                        if (NetworkServer.active && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0)
-                        {
-                            if (fixVengeanceScaling)
-                            {
-                                self.inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
-                            }
-                            if (vengeanceItemBlacklist.Count > 0)
-                            {
-                                foreach (ItemIndex item in vengeanceItemBlacklist)
-                                {
-                                    int itemCount = self.inventory.GetItemCount(item);
-                                    if (itemCount > 0)
-                                    {
-                                        self.inventory.RemoveItem(item, itemCount);
-                                    }
-                                }
-                            }
-                        }
-                    };
-                }
-            };
-
             //Build Equipment blacklist
             On.RoR2.EquipmentCatalog.Init += (orig) =>
             {
@@ -159,45 +98,10 @@ namespace AI_Blacklist
                     };
                 }
             };
-
-        }
-
-        public void AddToVengeanceBlacklist(string itemName)
-        {
-            ItemIndex i = ItemCatalog.FindItemIndex(itemName);
-            if (i != ItemIndex.None)
-            {
-                AddToVengeanceBlacklist(i);
-            }
-        }
-
-        public static void AddToVengeanceBlacklist(ItemIndex item)
-        {
-            vengeanceItemBlacklist.Add(item);
-        }
-
-        public static void AddToBlacklist(string itemName)
-        {
-            ItemIndex i = ItemCatalog.FindItemIndex(itemName);
-            if (i != ItemIndex.None)
-            {
-                AddToBlacklist(i);
-            }
-        }
-
-        public static void AddToBlacklist(ItemIndex index)
-        {
-            ItemDef itemDef = ItemCatalog.GetItemDef(index);
-            if (itemDef.DoesNotContainTag(ItemTag.AIBlacklist))
-            {
-                System.Array.Resize(ref itemDef.tags, itemDef.tags.Length + 1);
-                itemDef.tags[itemDef.tags.Length - 1] = ItemTag.AIBlacklist;
-            }
         }
 
 
-        //Based on https://github.com/Unordinal/UnosRoR2Mods/tree/master/AIBlacklister
-        #region equipment
+        //These functions are based on https://github.com/Unordinal/UnosRoR2Mods/tree/master/AIBlacklister
         private static EquipmentIndex GetRandomAllowedElite()
         {
             if (allowedEliteDefs.Count > 0)
@@ -232,6 +136,5 @@ namespace AI_Blacklist
             PickupDef randomEquip = PickupCatalog.GetPickupDef(equipsExceptBlacklist[UnityEngine.Random.Range(0, equipsExceptBlacklist.Count)]);
             return randomEquip.equipmentIndex;
         }
-        #endregion
     }
 }
