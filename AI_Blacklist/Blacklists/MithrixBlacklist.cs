@@ -1,11 +1,12 @@
 ﻿using RoR2;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AI_Blacklist
 {
     public class MithrixBlacklist
     {
-        public static bool useVanillaMithrixBlacklist = false;
+        public static bool useVanillaMithrixBlacklist = true;
         public static Dictionary<ItemIndex, int> mithrixItemLimits;
         public static string mithrixBlacklistString;
 
@@ -16,6 +17,19 @@ namespace AI_Blacklist
             On.RoR2.ItemCatalog.Init += (orig) =>
             {
                 orig();
+
+                if (!useVanillaMithrixBlacklist)
+                {
+                    foreach (ItemDef id in ItemCatalog.itemDefs)
+                    {
+                        if (id.ContainsTag(ItemTag.BrotherBlacklist))
+                        {
+                            List<ItemTag> tagList = id.tags.ToList<ItemTag>();
+                            tagList.Remove(ItemTag.BrotherBlacklist);
+                            id.tags = tagList.ToArray();
+                        }
+                    }
+                }
 
                 mithrixBlacklistString = new string(mithrixBlacklistString.ToCharArray().Where(c => !System.Char.IsWhiteSpace(c)).ToArray());
                 string[] splitBlacklist = mithrixBlacklistString.Split(',');

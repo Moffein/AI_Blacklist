@@ -16,6 +16,19 @@ namespace AI_Blacklist
             {
                 orig();
 
+                if (!useVanillaAIBlacklist)
+                {
+                    foreach (ItemDef id in ItemCatalog.itemDefs)
+                    {
+                        if (id.ContainsTag(ItemTag.AIBlacklist))
+                        {
+                            List<ItemTag> tagList = id.tags.ToList<ItemTag>();
+                            tagList.Remove(ItemTag.AIBlacklist);
+                            id.tags = tagList.ToArray();
+                        }
+                    }
+                }
+
                 itemBlacklistString = new string(itemBlacklistString.ToCharArray().Where(c => !System.Char.IsWhiteSpace(c)).ToArray());
                 string[] splitBlacklist = itemBlacklistString.Split(',');
                 foreach (string str in splitBlacklist)
