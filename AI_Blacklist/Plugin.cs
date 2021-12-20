@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 namespace AI_Blacklist
 {
     [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.3.0")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.3.1")]
     [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
     public class AI_Blacklist : BaseUnityPlugin
     {

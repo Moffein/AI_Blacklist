@@ -2,6 +2,7 @@
 using RoR2;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.Networking;
 
 namespace AI_Blacklist
 {
@@ -26,6 +27,19 @@ namespace AI_Blacklist
                     AddToVengeanceBlacklist(str);
                 }
             };
+
+            if (fixVengeanceScaling)
+            {
+                On.RoR2.CharacterBody.Start += (orig2, self) =>
+                {
+                    orig2(self);
+                    if (NetworkServer.active && self.teamComponent && self.teamComponent.teamIndex == TeamIndex.Monster
+                    && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0 && self.inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel) <= 0)
+                    {
+                        self.inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
+                    }
+                };
+            }
         }
 
         public static void AddToVengeanceBlacklist(string itemName)
