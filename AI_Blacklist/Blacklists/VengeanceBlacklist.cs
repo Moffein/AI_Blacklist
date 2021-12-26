@@ -28,15 +28,29 @@ namespace AI_Blacklist
                 }
             };
 
-            if (fixVengeanceScaling)
+            //Remove Blacklisted items from Vengeance Clones
+            if (fixVengeanceScaling || vengeanceItemBlacklist.Count > 0)
             {
                 On.RoR2.CharacterBody.Start += (orig2, self) =>
                 {
                     orig2(self);
-                    if (NetworkServer.active && self.teamComponent && self.teamComponent.teamIndex == TeamIndex.Monster
-                    && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0 && self.inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel) <= 0)
+                    if (NetworkServer.active && self.inventory)
                     {
-                        self.inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
+                        if (fixVengeanceScaling)
+                        {
+                            self.inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
+                        }
+                        if (vengeanceItemBlacklist.Count > 0)
+                        {
+                            foreach (ItemIndex item in vengeanceItemBlacklist)
+                            {
+                                int itemCount = self.inventory.GetItemCount(item);
+                                if (itemCount > 0)
+                                {
+                                    self.inventory.RemoveItem(item, itemCount);
+                                }
+                            }
+                        }
                     }
                 };
             }
