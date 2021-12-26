@@ -34,7 +34,7 @@ namespace AI_Blacklist
                 On.RoR2.CharacterBody.Start += (orig2, self) =>
                 {
                     orig2(self);
-                    if (NetworkServer.active && self.inventory)
+                    if (NetworkServer.active && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0)
                     {
                         if (fixVengeanceScaling)
                         {
