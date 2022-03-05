@@ -33,7 +33,7 @@ namespace AI_Blacklist
         {
             ReadConfig();
 
-            On.RoR2.ItemCatalog.Init += (orig) =>
+            /*On.RoR2.ItemCatalog.Init += (orig) =>
             {
                 orig();
 
@@ -59,13 +59,13 @@ namespace AI_Blacklist
                         Debug.Log(id.name);
                     }
                 }
-            };
+            };*/
 
-            //new AIBlacklist();
-            //new VengeanceBlacklist();
-            //new AIEquipBlacklist();
-            //new MithrixBlacklist();
-            //new ScavengerBlacklist();
+            new AIBlacklist();
+            new VengeanceBlacklist();
+            new AIEquipBlacklist();
+            new MithrixBlacklist();
+            new ScavengerBlacklist();
         }
     }
 }
