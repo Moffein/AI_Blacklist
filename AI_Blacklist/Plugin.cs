@@ -14,7 +14,7 @@ namespace AI_Blacklist
         public void ReadConfig()
         {
             AIBlacklist.useVanillaAIBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Settings", "Item Blacklist - Use Vanilla Blacklist"), true, new ConfigDescription("Automatically blacklist items that are blacklisted in vanilla.")).Value;
-            AIBlacklist.itemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Item Blacklist"), "ShockNearby, NovaOnHeal, Thorns", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
+            AIBlacklist.itemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Item Blacklist"), "ShockNearby, NovaOnHeal, Thorns, DroneWeapons, FreeChest, RegeneratingScrap", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
             
             AIEquipBlacklist.equipmentBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Equipment Blacklist"), "", new ConfigDescription("List equipment codenames separated by commas. List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
             
@@ -25,18 +25,47 @@ namespace AI_Blacklist
             MithrixBlacklist.mithrixBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Mithrix Settings", "Mithrix Blacklist"), "ShockNearby, NovaOnHeal, Thorns", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). To specify an item cap instead, enter a - followed by the max cap (ex. Behemoth - 5, ShockNearby, Clover - 1). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
 
             ScavengerBlacklist.useScavBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Scavenger Settings", "Use Separate Scavenger Blacklist"), false, new ConfigDescription("Scavengers get a separate blacklist from the generic AI Blacklist.")).Value;
-            ScavengerBlacklist.scavBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Scavenger Settings", "Scavenger Blacklist"), "ShockNearby, NovaOnHeal, Dagger, Feather, Mushroom, FallBoots, WardOnLevel, StunChanceOnHit, Firework, TreasureCache, BossDamageBonus, HeadHunter, KillEliteFrenzy, ExecuteLowHealthElite, TPHealingNova, LunarUtilityReplacement, LunarPrimaryReplacement, Thorns, Squid, FocusConvergence, MonstersOnShrineUse",
+            ScavengerBlacklist.scavBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Scavenger Settings", "Scavenger Blacklist"), "DroneWeapons, FreeChest, RegeneratingScrap, SprintBonus, SprintArmor, MushroomVoid, BossDamageBonus, Dagger, ExecuteLowHealthElite, FallBoots, Feather, Firework, FocusConvergence, GoldOnHurt, HeadHunter, HealingPotion, KillEliteFrenzy, LunarPrimaryReplacement, LunarSecondaryReplacement, LunarSpecialReplacement, LunarUtilityReplacement, MonstersOnShrineUse, Mushroom, Squid, StunChanceOnHit, TPHealingNova, Thorns, TreasureCache, TreasureCacheVoid, WardOnLevel, ShockNearby, NovaOnHeal",
                 new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names Vanilla AI Blacklist is included by default.")).Value;
         }
 
         public void Awake()
         {
             ReadConfig();
-            new AIBlacklist();
-            new VengeanceBlacklist();
-            new AIEquipBlacklist();
-            new MithrixBlacklist();
-            new ScavengerBlacklist();
+
+            On.RoR2.ItemCatalog.Init += (orig) =>
+            {
+                orig();
+
+                foreach(ItemDef id in ItemCatalog.itemDefs)
+                {
+                    Debug.Log(id.name);
+                }
+
+                Debug.Log("\n\n\nAI Blacklist:");
+                foreach (ItemDef id in ItemCatalog.itemDefs)
+                {
+                    if (id.ContainsTag(ItemTag.AIBlacklist))
+                    {
+                        Debug.Log(id.name);
+                    }
+                }
+
+                Debug.Log("\n\n\nBrother Blacklist:");
+                foreach (ItemDef id in ItemCatalog.itemDefs)
+                {
+                    if (id.ContainsTag(ItemTag.BrotherBlacklist))
+                    {
+                        Debug.Log(id.name);
+                    }
+                }
+            };
+
+            //new AIBlacklist();
+            //new VengeanceBlacklist();
+            //new AIEquipBlacklist();
+            //new MithrixBlacklist();
+            //new ScavengerBlacklist();
         }
     }
 }
