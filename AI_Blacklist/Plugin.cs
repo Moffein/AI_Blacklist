@@ -32,10 +32,6 @@ namespace AI_Blacklist
         public void Awake()
         {
             ReadConfig();
-        }
-
-        public void Start()
-        {
             new AIBlacklist();
             new VengeanceBlacklist();
             new AIEquipBlacklist();
