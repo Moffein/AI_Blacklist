@@ -33,19 +33,38 @@ namespace AI_Blacklist
             {
                 Inventory inventory = self.GetComponent<Inventory>();
 
-                List<PickupIndex> list = Run.instance.availableTier1DropList.Where(PickupIsNonBlacklistedItem).ToList();
+                //Old Code
+                /*List<PickupIndex> list1 = Run.instance.availableTier1DropList.Where(PickupIsNonBlacklistedItem).ToList();
                 List<PickupIndex> list2 = Run.instance.availableTier2DropList.Where(PickupIsNonBlacklistedItem).ToList();
                 List<PickupIndex> list3 = Run.instance.availableTier3DropList.Where(PickupIsNonBlacklistedItem).ToList();
-
-                List<PickupIndex> availableEquipmentDropList = Run.instance.availableEquipmentDropList;
-
                 self.GrantItems(inventory, list, self.tier1Types, self.tier1StackSize);
                 self.GrantItems(inventory, list2, self.tier2Types, self.tier2StackSize);
-                self.GrantItems(inventory, list3, self.tier3Types, self.tier3StackSize);
+                self.GrantItems(inventory, list3, self.tier3Types, self.tier3StackSize);*/
+
+                //New Code
+                foreach (ScavengerItemGranter.StackRollData stackRollData in self.stackRollDataList)
+                {
+                    if (stackRollData.dropTable)
+                    {
+                        for (int j = 0; j < stackRollData.numRolls; j++)
+                        {
+                            PickupDef pickupDef = PickupCatalog.GetPickupDef(stackRollData.dropTable.GenerateDrop(ScavengerItemGranter.rng));
+
+                            List<ItemIndex> itemList = Run.instance.availableItems.Where(IsNonBlacklistedItem).ToList();
+                            itemList = SelectItemTier(itemList, pickupDef.itemTier);
+
+                            if (itemList.Count > 0)
+                            {
+                                int dropIndex = ScavengerItemGranter.rng.RangeInt(0, itemList.Count);
+                                inventory.GiveItem(itemList[dropIndex], stackRollData.stacks);
+                            }
+                        }
+                    }
+                }
 
                 if (self.overwriteEquipment || inventory.currentEquipmentIndex == EquipmentIndex.None)
                 {
-                    inventory.GiveRandomEquipment();
+                    inventory.GiveRandomEquipment(ScavengerItemGranter.rng);
                 }
             };
 
@@ -53,6 +72,32 @@ namespace AI_Blacklist
             {
                 return PickupIsNonBlacklistedItem(pickupIndex);
             };
+        }
+
+        private static List<ItemIndex> SelectItemTier(List<ItemIndex> itemList, ItemTier tier)
+        {
+            List<ItemIndex> toRemove = new List<ItemIndex>();
+            foreach (ItemIndex itemIndex in itemList)
+            {
+                ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                if (itemDef.tier != tier || itemIndex == ItemIndex.None)
+                {
+                    toRemove.Add(itemIndex);
+                }
+            }
+
+            foreach(ItemIndex remove in toRemove)
+            {
+                itemList.Remove(remove);
+            }
+
+            return itemList;
+        }
+
+        public static bool IsNonBlacklistedItem(ItemIndex itemIndex)
+        {
+            ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+            return !(itemDef == null) && !scavBlacklist.Contains(itemDef);
         }
 
         public static bool PickupIsNonBlacklistedItem(PickupIndex pickupIndex)

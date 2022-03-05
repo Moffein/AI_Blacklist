@@ -36,7 +36,7 @@ namespace AI_Blacklist
                     orig2(self);
                     if (NetworkServer.active && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0)
                     {
-                        if (fixVengeanceScaling)
+                        if (fixVengeanceScaling && self.inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel) <= 0)
                         {
                             self.inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
                         }
