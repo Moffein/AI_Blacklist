@@ -33,37 +33,6 @@ namespace AI_Blacklist
 
                 if (equipBlacklist.Count > 0)
                 {
-
-                    //This seems really inefficient.
-                    allowedEliteDefs = new HashSet<EliteDef>();
-                    for (int i = 0; i < EliteCatalog.eliteDefs.Length; i++)
-                    {
-                        if (EliteCatalog.eliteDefs[i].eliteEquipmentDef)
-                        {
-                            bool isAllowed = !(EliteCatalog.eliteDefs[i].eliteIndex == RoR2Content.Elites.Echo.eliteIndex
-                            || EliteCatalog.eliteDefs[i].eliteIndex == RoR2Content.Elites.Gold.eliteIndex
-                            || EliteCatalog.eliteDefs[i].eliteIndex == RoR2Content.Elites.Lunar.eliteIndex
-                            || EliteCatalog.eliteDefs[i].eliteIndex == RoR2Content.Elites.Poison.eliteIndex
-                            || EliteCatalog.eliteDefs[i].eliteIndex == RoR2Content.Elites.Haunted.eliteIndex);
-                            if (isAllowed)
-                            {
-                                foreach (EquipmentIndex ei in equipBlacklist)
-                                {
-                                    EquipmentDef ed = EquipmentCatalog.GetEquipmentDef(ei);
-                                    if (ed == EliteCatalog.eliteDefs[i].eliteEquipmentDef)
-                                    {
-                                        isAllowed = false;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (isAllowed)
-                            {
-                                allowedEliteDefs.Add(EliteCatalog.eliteDefs[i]);
-                            }
-                        }
-                    }
-
                     //This seems really inefficient.
                     On.RoR2.Inventory.SetEquipmentIndex += (orig2, self, equipmentIndex) =>
                     {
@@ -80,14 +49,7 @@ namespace AI_Blacklist
                                         if (ei == equipmentIndex)
                                         {
                                             EquipmentDef ed = EquipmentCatalog.GetEquipmentDef(ei);
-                                            if (ed.passiveBuffDef && ed.passiveBuffDef.isElite)
-                                            {
-                                                equipmentIndex = GetRandomAllowedElite();
-                                            }
-                                            else
-                                            {
-                                                equipmentIndex = GetRandomNonBlacklistEquipment();
-                                            }
+                                            equipmentIndex = GetRandomNonBlacklistEquipment();
                                             break;
                                         }
                                     }
@@ -98,21 +60,6 @@ namespace AI_Blacklist
                     };
                 }
             };
-        }
-
-
-        //These functions are based on https://github.com/Unordinal/UnosRoR2Mods/tree/master/AIBlacklister
-        private static EquipmentIndex GetRandomAllowedElite()
-        {
-            if (allowedEliteDefs.Count > 0)
-            {
-                EliteDef selectedElite = (allowedEliteDefs.ToList<EliteDef>())[Random.Range(0, allowedEliteDefs.Count)];
-                return selectedElite.eliteEquipmentDef.equipmentIndex;
-            }
-            else
-            {
-                return EquipmentIndex.None;
-            }
         }
 
         private static IEnumerable<PickupIndex> EquipmentToPickupIndices(IEnumerable<EquipmentIndex> equipIndices)
