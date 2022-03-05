@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using BepInEx;
-using R2API.Utils;
 using BepInEx.Configuration;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,9 +8,7 @@ using UnityEngine.Networking;
 
 namespace AI_Blacklist
 {
-    [BepInDependency("com.bepis.r2api")]
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.3.3")]
-    [NetworkCompatibility(CompatibilityLevel.NoNeedForSync, VersionStrictness.DifferentModVersionsAreOk)]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.3.4")]
     public class AI_Blacklist : BaseUnityPlugin
     {
         public void ReadConfig()
