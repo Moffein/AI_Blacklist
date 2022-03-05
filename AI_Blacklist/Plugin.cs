@@ -8,13 +8,13 @@ using UnityEngine.Networking;
 
 namespace AI_Blacklist
 {
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.4.0")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.4.1")]
     public class AI_Blacklist : BaseUnityPlugin
     {
         public void ReadConfig()
         {
             AIBlacklist.useVanillaAIBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Settings", "Item Blacklist - Use Vanilla Blacklist"), true, new ConfigDescription("Automatically blacklist items that are blacklisted in vanilla.")).Value;
-            AIBlacklist.itemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Item Blacklist"), "ShockNearby, NovaOnHeal, Thorns, DroneWeapons, FreeChest, RegeneratingScrap", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
+            AIBlacklist.itemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Item Blacklist"), "ImmuneToDebuff, ShockNearby, NovaOnHeal, Thorns, DroneWeapons, FreeChest, RegeneratingScrap", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
             
             AIEquipBlacklist.equipmentBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Equipment Blacklist"), "", new ConfigDescription("List equipment codenames separated by commas. List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
             
@@ -25,7 +25,7 @@ namespace AI_Blacklist
             MithrixBlacklist.mithrixBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Mithrix Settings", "Mithrix Blacklist"), "ShockNearby, NovaOnHeal, Thorns", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). To specify an item cap instead, enter a - followed by the max cap (ex. Behemoth - 5, ShockNearby, Clover - 1). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names")).Value;
 
             ScavengerBlacklist.useScavBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Scavenger Settings", "Use Separate Scavenger Blacklist"), false, new ConfigDescription("Scavengers get a separate blacklist from the generic AI Blacklist.")).Value;
-            ScavengerBlacklist.scavBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Scavenger Settings", "Scavenger Blacklist"), "DroneWeapons, FreeChest, RegeneratingScrap, SprintBonus, SprintArmor, MushroomVoid, BossDamageBonus, Dagger, ExecuteLowHealthElite, FallBoots, Feather, Firework, FocusConvergence, GoldOnHurt, HeadHunter, HealingPotion, KillEliteFrenzy, LunarPrimaryReplacement, LunarSecondaryReplacement, LunarSpecialReplacement, LunarUtilityReplacement, MonstersOnShrineUse, Mushroom, Squid, StunChanceOnHit, TPHealingNova, Thorns, TreasureCache, TreasureCacheVoid, WardOnLevel, ShockNearby, NovaOnHeal",
+            ScavengerBlacklist.scavBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Scavenger Settings", "Scavenger Blacklist"), "ImmuneToDebuff, DroneWeapons, FreeChest, RegeneratingScrap, SprintBonus, SprintArmor, MushroomVoid, BossDamageBonus, Dagger, ExecuteLowHealthElite, FallBoots, Feather, Firework, FocusConvergence, GoldOnHurt, HeadHunter, HealingPotion, KillEliteFrenzy, LunarPrimaryReplacement, LunarSecondaryReplacement, LunarSpecialReplacement, LunarUtilityReplacement, MonstersOnShrineUse, Mushroom, Squid, StunChanceOnHit, TPHealingNova, Thorns, TreasureCache, TreasureCacheVoid, WardOnLevel, ShockNearby, NovaOnHeal",
                 new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found at https://github.com/risk-of-thunder/R2Wiki/wiki/Item-&-Equipment-IDs-and-Names Vanilla AI Blacklist is included by default.")).Value;
         }
 
