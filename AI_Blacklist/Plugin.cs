@@ -1,14 +1,18 @@
-﻿using RoR2;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Configuration;
-using System.Linq;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
+using System;
+
+namespace R2API.Utils
+{
+    [AttributeUsage(AttributeTargets.Assembly)]
+    public class ManualNetworkRegistrationAttribute : Attribute
+    {
+    }
+}
 
 namespace AI_Blacklist
 {
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.4.1")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.4.2")]
     public class AI_Blacklist : BaseUnityPlugin
     {
         public void ReadConfig()
