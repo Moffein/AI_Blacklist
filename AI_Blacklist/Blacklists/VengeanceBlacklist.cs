@@ -2,6 +2,7 @@
 using RoR2;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace AI_Blacklist
@@ -31,9 +32,9 @@ namespace AI_Blacklist
             //Remove Blacklisted items from Vengeance Clones
             if (fixVengeanceScaling || vengeanceItemBlacklist.Count > 0)
             {
-                On.RoR2.CharacterBody.Start += (orig2, self) =>
+                On.RoR2.CharacterBody.OnInventoryChanged += (orig, self) =>
                 {
-                    orig2(self);
+                    orig(self);
                     if (NetworkServer.active && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0)
                     {
                         if (fixVengeanceScaling && self.inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel) <= 0)
