@@ -37,9 +37,11 @@ namespace AI_Blacklist
                     orig(self);
                     if (NetworkServer.active && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0)
                     {
-                        if (fixVengeanceScaling && self.inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel) <= 0)
+                        if (fixVengeanceScaling)
                         {
-                            self.inventory.GiveItem(RoR2Content.Items.UseAmbientLevel);
+                            self.inventory.RemoveItem(RoR2Content.Items.UseAmbientLevel, self.inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel));
+                            self.inventory.RemoveItem(RoR2Content.Items.LevelBonus, self.inventory.GetItemCount(RoR2Content.Items.LevelBonus));
+                            self.inventory.GiveItem(RoR2Content.Items.LevelBonus, (int)TeamManager.instance.GetTeamLevel(TeamIndex.Player) - 1);
                         }
                         if (vengeanceItemBlacklist.Count > 0)
                         {

@@ -12,7 +12,7 @@ namespace R2API.Utils
 
 namespace AI_Blacklist
 {
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.4.5")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.5.0")]
     public class AI_Blacklist : BaseUnityPlugin
     {
         public void ReadConfig()
