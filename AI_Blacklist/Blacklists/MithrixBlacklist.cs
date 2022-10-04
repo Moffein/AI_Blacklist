@@ -27,6 +27,17 @@ namespace AI_Blacklist
                             List<ItemTag> tagList = id.tags.ToList<ItemTag>();
                             tagList.Remove(ItemTag.BrotherBlacklist);
                             id.tags = tagList.ToArray();
+
+                            ItemIndex index = id.itemIndex;
+                            if (index != ItemIndex.None && ItemCatalog.itemIndicesByTag != null && ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist] != null)
+                            {
+                                List<ItemIndex> itemList = ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist].ToList();
+                                if (itemList.Contains(index))
+                                {
+                                    itemList.Remove(index);
+                                    ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist] = itemList.ToArray();
+                                }
+                            }
                         }
                     }
                 }
@@ -86,6 +97,16 @@ namespace AI_Blacklist
             {
                 System.Array.Resize(ref itemDef.tags, itemDef.tags.Length + 1);
                 itemDef.tags[itemDef.tags.Length - 1] = ItemTag.BrotherBlacklist;
+
+                if (index != ItemIndex.None && ItemCatalog.itemIndicesByTag != null)
+                {
+                    List<ItemIndex> itemList = ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist].ToList();
+                    if (!itemList.Contains(index))
+                    {
+                        itemList.Add(index);
+                        ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist] = itemList.ToArray();
+                    }
+                }
             }
         }
     }
