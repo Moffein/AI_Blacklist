@@ -12,6 +12,8 @@ namespace AI_Blacklist
         public static bool fixVengeanceScaling = true;
         public static string vengeanceItemBlacklistString;
         public static HashSet<ItemIndex> vengeanceItemBlacklist;
+        public static bool useAIBlacklist = true;
+        public static bool useTurretBlacklist = true;
 
         public VengeanceBlacklist()
         {
@@ -30,7 +32,7 @@ namespace AI_Blacklist
             };
 
             //Remove Blacklisted items from Vengeance Clones
-            if (fixVengeanceScaling || vengeanceItemBlacklist.Count > 0)
+            if (fixVengeanceScaling || vengeanceItemBlacklist.Count > 0 || useAIBlacklist || useTurretBlacklist)
             {
                 RoR2.CharacterMaster.onStartGlobal += RunVengeanceChanges;
             }
@@ -58,6 +60,22 @@ namespace AI_Blacklist
                         if (itemCount > 0)
                         {
                             self.inventory.RemoveItem(item, itemCount);
+                        }
+                    }
+                }
+
+                //Seems inefficient
+                if (useAIBlacklist || useTurretBlacklist)
+                {
+                    foreach (ItemDef item in ItemCatalog.itemDefs)
+                    {
+                        if ((useAIBlacklist && item.ContainsTag(ItemTag.AIBlacklist)) || (useTurretBlacklist && item.ContainsTag(ItemTag.CannotCopy)))
+                        {
+                            int itemCount = self.inventory.GetItemCount(item);
+                            if (itemCount > 0)
+                            {
+                                self.inventory.RemoveItem(item, itemCount);
+                            }
                         }
                     }
                 }
