@@ -1,6 +1,7 @@
 ﻿using RoR2;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace AI_Blacklist
 {
@@ -19,7 +20,7 @@ namespace AI_Blacklist
             {
                 orig();
 
-                if (!useVanillaMithrixBlacklist && !blacklistAllItems)
+                if (!useVanillaMithrixBlacklist)
                 {
                     foreach (ItemDef id in ItemCatalog.itemDefs)
                     {
@@ -67,22 +68,9 @@ namespace AI_Blacklist
                 {
                     foreach (ItemDef id in ItemCatalog.itemDefs)
                     {
-                        if (!id.ContainsTag(ItemTag.BrotherBlacklist))
+                        if (id.itemIndex != ItemIndex.None)
                         {
-                            List<ItemTag> tagList = id.tags.ToList<ItemTag>();
-                            tagList.Add(ItemTag.BrotherBlacklist);
-                            id.tags = tagList.ToArray();
-
-                            ItemIndex index = id.itemIndex;
-                            if (index != ItemIndex.None && ItemCatalog.itemIndicesByTag != null && ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist] != null)
-                            {
-                                List<ItemIndex> itemList = ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist].ToList();
-                                if (!itemList.Contains(index))
-                                {
-                                    itemList.Add(index);
-                                    ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist] = itemList.ToArray();
-                                }
-                            }
+                            AddToMithrixBlacklist(id.itemIndex);
                         }
                     }
                 }
