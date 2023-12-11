@@ -12,7 +12,7 @@ namespace R2API.Utils
 
 namespace AI_Blacklist
 {
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.6.0")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.6.1")]
     public class AI_Blacklist : BaseUnityPlugin
     {
         public void ReadConfig()
@@ -27,9 +27,9 @@ namespace AI_Blacklist
             VengeanceBlacklist.useAIBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Vengeance Settings", "Use AI Blacklist"), true, new ConfigDescription("Automatically remove items with the AIBlacklist tag.")).Value;
             VengeanceBlacklist.useTurretBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Vengeance Settings", "Use Engi Turret Blacklist"), true, new ConfigDescription("Automatically remove items with the CannotCopy tag.")).Value;
 
-
             MithrixBlacklist.useVanillaMithrixBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Mithrix Settings", "Use Vanilla Blacklist"), true, new ConfigDescription("Automatically blacklist items that are blacklisted in vanilla.")).Value;
             MithrixBlacklist.mithrixBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Mithrix Settings", "Mithrix Blacklist"), "ShockNearby, NovaOnHeal, Thorns", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). To specify an item cap instead, enter a - followed by the max cap (ex. Behemoth - 5, ShockNearby, Clover - 1). List of item codenames can be found by using the list_item console command from the DebugToolKit mod.")).Value;
+            MithrixBlacklist.blacklistAllItems = base.Config.Bind<bool>(new ConfigDefinition("Mithrix Settings", "Blacklist All Items (EXPERIMENTAL)"), false, new ConfigDescription("Blacklist EVERY item from Mithrix. MAY CAUSE UNEXPECTED BEHAVIOR.")).Value;
 
             ScavengerBlacklist.useScavBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Scavenger Settings", "Use Separate Scavenger Blacklist"), false, new ConfigDescription("Scavengers get a separate blacklist from the generic AI Blacklist. Enabling this might break compatibility with mods that modify Scavengers.")).Value;
             ScavengerBlacklist.scavBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Scavenger Settings", "Scavenger Blacklist"), "PrimarySkillShuriken, ImmuneToDebuff, DroneWeapons, FreeChest, RegeneratingScrap, SprintBonus, SprintArmor, MushroomVoid, BossDamageBonus, Dagger, ExecuteLowHealthElite, FallBoots, Feather, Firework, FocusConvergence, GoldOnHurt, HeadHunter, HealingPotion, KillEliteFrenzy, LunarPrimaryReplacement, LunarSecondaryReplacement, LunarSpecialReplacement, LunarUtilityReplacement, MonstersOnShrineUse, Mushroom, Squid, StunChanceOnHit, TPHealingNova, Thorns, TreasureCache, TreasureCacheVoid, WardOnLevel, ShockNearby, NovaOnHeal",

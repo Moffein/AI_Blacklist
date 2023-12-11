@@ -9,6 +9,7 @@ namespace AI_Blacklist
         public static bool useVanillaMithrixBlacklist = true;
         public static Dictionary<ItemIndex, int> mithrixItemLimits;
         public static string mithrixBlacklistString;
+        public static bool blacklistAllItems = false;
 
         public MithrixBlacklist()
         {
@@ -18,7 +19,7 @@ namespace AI_Blacklist
             {
                 orig();
 
-                if (!useVanillaMithrixBlacklist)
+                if (!useVanillaMithrixBlacklist && !blacklistAllItems)
                 {
                     foreach (ItemDef id in ItemCatalog.itemDefs)
                     {
@@ -59,6 +60,30 @@ namespace AI_Blacklist
                     else if (current.Length > 0)
                     {
                         AddToMithrixBlacklist(current[0]);
+                    }
+                }
+
+                if (blacklistAllItems)
+                {
+                    foreach (ItemDef id in ItemCatalog.itemDefs)
+                    {
+                        if (!id.ContainsTag(ItemTag.BrotherBlacklist))
+                        {
+                            List<ItemTag> tagList = id.tags.ToList<ItemTag>();
+                            tagList.Add(ItemTag.BrotherBlacklist);
+                            id.tags = tagList.ToArray();
+
+                            ItemIndex index = id.itemIndex;
+                            if (index != ItemIndex.None && ItemCatalog.itemIndicesByTag != null && ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist] != null)
+                            {
+                                List<ItemIndex> itemList = ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist].ToList();
+                                if (!itemList.Contains(index))
+                                {
+                                    itemList.Add(index);
+                                    ItemCatalog.itemIndicesByTag[(int)ItemTag.BrotherBlacklist] = itemList.ToArray();
+                                }
+                            }
+                        }
                     }
                 }
             };
