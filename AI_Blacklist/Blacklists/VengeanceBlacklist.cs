@@ -67,7 +67,7 @@ namespace AI_Blacklist
                 //Seems inefficient
                 if (useAIBlacklist || useTurretBlacklist)
                 {
-                    foreach (ItemDef item in ItemCatalog.itemDefs)
+                    foreach (ItemDef item in ItemCatalog.allItemDefs)
                     {
                         if ((useAIBlacklist && item.ContainsTag(ItemTag.AIBlacklist)) || (useTurretBlacklist && item.ContainsTag(ItemTag.CannotCopy)))
                         {

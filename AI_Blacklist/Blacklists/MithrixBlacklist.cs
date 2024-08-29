@@ -22,7 +22,7 @@ namespace AI_Blacklist
 
                 if (!useVanillaMithrixBlacklist)
                 {
-                    foreach (ItemDef id in ItemCatalog.itemDefs)
+                    foreach (ItemDef id in ItemCatalog.allItemDefs)
                     {
                         if (id.ContainsTag(ItemTag.BrotherBlacklist))
                         {
@@ -66,7 +66,7 @@ namespace AI_Blacklist
 
                 if (blacklistAllItems)
                 {
-                    foreach (ItemDef id in ItemCatalog.itemDefs)
+                    foreach (ItemDef id in ItemCatalog.allItemDefs)
                     {
                         if (id.itemIndex != ItemIndex.None)
                         {

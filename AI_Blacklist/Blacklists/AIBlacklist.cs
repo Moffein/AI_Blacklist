@@ -18,7 +18,7 @@ namespace AI_Blacklist
 
                 if (!useVanillaAIBlacklist)
                 {
-                    foreach (ItemDef id in ItemCatalog.itemDefs)
+                    foreach (ItemDef id in ItemCatalog.allItemDefs)
                     {
                         if (id.ContainsTag(ItemTag.AIBlacklist))
                         {
