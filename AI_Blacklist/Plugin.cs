@@ -12,7 +12,7 @@ namespace R2API.Utils
 
 namespace AI_Blacklist
 {
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.6.4")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.6.5")]
     public class AI_Blacklist : BaseUnityPlugin
     {
         public void ReadConfig()
@@ -24,7 +24,7 @@ namespace AI_Blacklist
             
             VengeanceBlacklist.vengeanceItemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Vengeance Settings", "Vengeance Item Blacklist"), "NegateAttack, TriggerEnemyDebuffs, ShockNearby, NovaOnHeal, Thorns", new ConfigDescription("Item Blacklist for Vengeance Clones. Same format as the global AI item blacklist.")).Value;
             VengeanceBlacklist.fixVengeanceScaling = base.Config.Bind<bool>(new ConfigDefinition("Vengeance Settings", "Fix Scaling"), true, new ConfigDescription("Fix Vengeance clones always being level 1.")).Value;
-            VengeanceBlacklist.useAIBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Vengeance Settings", "Use AI Blacklist"), true, new ConfigDescription("Automatically remove items with the AIBlacklist tag.")).Value;
+            VengeanceBlacklist.useAIBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Vengeance Settings", "Use AI Blacklist"), false, new ConfigDescription("Automatically remove items with the AIBlacklist tag.")).Value;
             VengeanceBlacklist.useTurretBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Vengeance Settings", "Use Engi Turret Blacklist"), true, new ConfigDescription("Automatically remove items with the CannotCopy tag.")).Value;
 
             MithrixBlacklist.useVanillaMithrixBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Mithrix Settings", "Use Vanilla Blacklist"), true, new ConfigDescription("Automatically blacklist items that are blacklisted in vanilla.")).Value;
