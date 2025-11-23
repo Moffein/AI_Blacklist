@@ -33,33 +33,30 @@ namespace AI_Blacklist
 
                 if (equipBlacklist.Count > 0)
                 {
-                    //This seems really inefficient.
-                    On.RoR2.Inventory.SetEquipmentIndex += (orig2, self, equipmentIndex) =>
-                    {
-                        CharacterMaster cm = self.gameObject.GetComponent<CharacterMaster>();
-                        if (cm && cm.teamIndex != TeamIndex.Player && cm.aiComponents != null && cm.aiComponents.Length > 0)
-                        {
-                            Inventory inv = cm.inventory;
-                            if (inv)
-                            {
-                                if (inv.GetItemCount(RoR2Content.Items.InvadingDoppelganger) <= 0)
-                                {
-                                    foreach (EquipmentIndex ei in equipBlacklist)
-                                    {
-                                        if (ei == equipmentIndex)
-                                        {
-                                            EquipmentDef ed = EquipmentCatalog.GetEquipmentDef(ei);
-                                            equipmentIndex = GetRandomNonBlacklistEquipment();
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        orig2(self, equipmentIndex);
-                    };
+                    On.RoR2.Inventory.SetEquipmentIndexForSlot_EquipmentIndex_uint_uint += Inventory_SetEquipmentIndexForSlot_EquipmentIndex_uint_uint;
                 }
             };
+        }
+
+        private void Inventory_SetEquipmentIndexForSlot_EquipmentIndex_uint_uint(On.RoR2.Inventory.orig_SetEquipmentIndexForSlot_EquipmentIndex_uint_uint orig, Inventory self, EquipmentIndex newEquipmentIndex, uint slot, uint set)
+        {
+            CharacterMaster cm = self.gameObject.GetComponent<CharacterMaster>();
+            if (cm && cm.teamIndex != TeamIndex.Player && cm.aiComponents != null && cm.aiComponents.Length > 0)
+            {
+                Inventory inv = cm.inventory;
+                if (inv)
+                {
+                    if (inv.GetItemCount(RoR2Content.Items.InvadingDoppelganger) <= 0)
+                    {
+                        if (equipBlacklist.Contains(newEquipmentIndex))
+                        {
+                            newEquipmentIndex = GetRandomNonBlacklistEquipment();
+                        }
+                    }
+                }
+            }
+
+            orig(self, newEquipmentIndex, slot, set);
         }
 
         private static IEnumerable<PickupIndex> EquipmentToPickupIndices(IEnumerable<EquipmentIndex> equipIndices)
