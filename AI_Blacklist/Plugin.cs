@@ -12,13 +12,13 @@ namespace R2API.Utils
 
 namespace AI_Blacklist
 {
-    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.6.5")]
+    [BepInPlugin("com.Moffein.AI_Blacklist", "AI Blacklist", "1.6.6")]
     public class AI_Blacklist : BaseUnityPlugin
     {
         public void ReadConfig()
         {
             AIBlacklist.useVanillaAIBlacklist = base.Config.Bind<bool>(new ConfigDefinition("Settings", "Item Blacklist - Use Vanilla Blacklist"), true, new ConfigDescription("Automatically blacklist items that are blacklisted in vanilla.")).Value;
-            AIBlacklist.itemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Item Blacklist"), "ShieldBooster, DelayedDamage, ExtraStatsOnLevelUp, TeleportOnLowHealth, ExtraShrineItem, LowerPricedChests, GoldOnStageStart, ResetChests, Icicle, PrimarySkillShuriken, ImmuneToDebuff, ShockNearby, NovaOnHeal, Thorns, DroneWeapons, FreeChest, RegeneratingScrap", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found by using the list_item console command from the DebugToolKit mod.")).Value;
+            AIBlacklist.itemBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Item Blacklist"), "SharedSuffering, ShieldBooster, DelayedDamage, ExtraStatsOnLevelUp, TeleportOnLowHealth, ExtraShrineItem, LowerPricedChests, GoldOnStageStart, ResetChests, Icicle, PrimarySkillShuriken, ImmuneToDebuff, ShockNearby, NovaOnHeal, Thorns, DroneWeapons, FreeChest, RegeneratingScrap", new ConfigDescription("List item codenames separated by commas (ex. Behemoth, ShockNearby, Clover). List of item codenames can be found by using the list_item console command from the DebugToolKit mod.")).Value;
             
             AIEquipBlacklist.equipmentBlacklistString = base.Config.Bind<string>(new ConfigDefinition("Settings", "Equipment Blacklist"), "HealAndRevive, MultiShopCard, BossHunter, BossHunterConsumed, VendingMachine, LeaveStage, CLASSICITEMSRETURNS_EQUIPMENT_CREATEGHOSTTARGETING, CLASSICITEMSRETURNS_EQUIPMENT_LOSTDOLL, CursedScythe", new ConfigDescription("List equipment codenames separated by commas. List of item codenames can be found by using the list_item console command from the DebugToolKit mod.")).Value;
             
