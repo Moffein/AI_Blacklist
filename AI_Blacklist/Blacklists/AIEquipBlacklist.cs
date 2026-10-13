@@ -46,7 +46,7 @@ namespace AI_Blacklist
                 Inventory inv = cm.inventory;
                 if (inv)
                 {
-                    if (inv.GetItemCount(RoR2Content.Items.InvadingDoppelganger) <= 0)
+                    if (inv.GetItemCountPermanent(RoR2Content.Items.InvadingDoppelganger) <= 0)
                     {
                         if (equipBlacklist.Contains(newEquipmentIndex))
                         {

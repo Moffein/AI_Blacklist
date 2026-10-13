@@ -56,7 +56,7 @@ namespace AI_Blacklist
                             if (itemList.Count > 0)
                             {
                                 int dropIndex = ScavengerItemGranter.rng.RangeInt(0, itemList.Count);
-                                inventory.GiveItem(itemList[dropIndex], stackRollData.stacks);
+                                inventory.GiveItemPermanent(itemList[dropIndex], stackRollData.stacks);
                             }
                         }
                     }

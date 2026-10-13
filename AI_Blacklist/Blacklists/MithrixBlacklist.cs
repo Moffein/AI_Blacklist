@@ -83,10 +83,10 @@ namespace AI_Blacklist
                 {
                     foreach (KeyValuePair<ItemIndex, int> pair in mithrixItemLimits)
                     {
-                        int count = self.lendeeInventory.GetItemCount(pair.Key);
+                        int count = self.lendeeInventory.GetItemCountPermanent(pair.Key);
                         if (count > pair.Value)
                         {
-                            self.lendeeInventory.RemoveItem(pair.Key, count - pair.Value);
+                            self.lendeeInventory.RemoveItemPermanent(pair.Key, count - pair.Value);
                         }
                     }
                 }

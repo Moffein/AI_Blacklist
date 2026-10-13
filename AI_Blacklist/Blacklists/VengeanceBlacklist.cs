@@ -40,26 +40,26 @@ namespace AI_Blacklist
 
         private void RunVengeanceChanges(CharacterMaster self)
         {
-            if (NetworkServer.active && self.inventory && self.inventory.GetItemCount(RoR2Content.Items.InvadingDoppelganger) > 0)
+            if (NetworkServer.active && self.inventory && self.inventory.GetItemCountPermanent(RoR2Content.Items.InvadingDoppelganger) > 0)
             {
                 if (fixVengeanceScaling)
                 {
-                    int alCount = self.inventory.GetItemCount(RoR2Content.Items.UseAmbientLevel);
-                    if (alCount > 0) self.inventory.RemoveItem(RoR2Content.Items.UseAmbientLevel, alCount);
+                    int alCount = self.inventory.GetItemCountPermanent(RoR2Content.Items.UseAmbientLevel);
+                    if (alCount > 0) self.inventory.RemoveItemPermanent(RoR2Content.Items.UseAmbientLevel, alCount);
 
-                    int lbCount = self.inventory.GetItemCount(RoR2Content.Items.LevelBonus);
-                    if (lbCount > 0) self.inventory.RemoveItem(RoR2Content.Items.LevelBonus, lbCount);
+                    int lbCount = self.inventory.GetItemCountPermanent(RoR2Content.Items.LevelBonus);
+                    if (lbCount > 0) self.inventory.RemoveItemPermanent(RoR2Content.Items.LevelBonus, lbCount);
 
-                    self.inventory.GiveItem(RoR2Content.Items.LevelBonus, (int)TeamManager.instance.GetTeamLevel(TeamIndex.Player) - 1);
+                    self.inventory.GiveItemPermanent(RoR2Content.Items.LevelBonus, (int)TeamManager.instance.GetTeamLevel(TeamIndex.Player) - 1);
                 }
                 if (vengeanceItemBlacklist.Count > 0)
                 {
                     foreach (ItemIndex item in vengeanceItemBlacklist)
                     {
-                        int itemCount = self.inventory.GetItemCount(item);
+                        int itemCount = self.inventory.GetItemCountPermanent(item);
                         if (itemCount > 0)
                         {
-                            self.inventory.RemoveItem(item, itemCount);
+                            self.inventory.RemoveItemPermanent(item, itemCount);
                         }
                     }
                 }
@@ -71,10 +71,10 @@ namespace AI_Blacklist
                     {
                         if ((useAIBlacklist && item.ContainsTag(ItemTag.AIBlacklist)) || (useTurretBlacklist && item.ContainsTag(ItemTag.CannotCopy)))
                         {
-                            int itemCount = self.inventory.GetItemCount(item);
+                            int itemCount = self.inventory.GetItemCountPermanent(item);
                             if (itemCount > 0)
                             {
-                                self.inventory.RemoveItem(item, itemCount);
+                                self.inventory.RemoveItemPermanent(item, itemCount);
                             }
                         }
                     }
